@@ -12,6 +12,8 @@ FFmpegTools provides simple drag-and-drop utilities for common media processing 
 
 Whether you need to standardize video formats or extract high-quality audio from media files, FFmpegTools offers a straightforward solution for everyday tasks.
 
+> **Note:** FFmpeg must be installed and available in the system PATH before using these utilities.
+
 ---
 
 ## Features
@@ -42,7 +44,6 @@ Extracts audio from video files and saves it as an uncompressed WAV file suitabl
 ```text
 FFmpegTools/
 │
-├── ffmpeg.exe
 ├── VideoToMP4.bat
 ├── VideoToWav.bat
 ├── README.md
@@ -55,13 +56,24 @@ FFmpegTools/
 
 ## Requirements
 
-### Option 1 (Recommended)
+FFmpegTools requires FFmpeg to be installed on your system.
 
-Use the bundled `ffmpeg.exe` included in this repository.
+### Install FFmpeg
 
-### Option 2
+1. Download FFmpeg from the official website:
+   https://ffmpeg.org/download.html
 
-Install FFmpeg separately and ensure it is available through the system PATH.
+2. Extract the downloaded files.
+
+3. Add the FFmpeg `bin` folder to your system PATH.
+
+4. Verify the installation by opening Command Prompt and running:
+
+```bash
+ffmpeg -version
+```
+
+If FFmpeg is installed correctly, version information will be displayed.
 
 ---
 
