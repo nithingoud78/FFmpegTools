@@ -1,6 +1,6 @@
 # FFmpegTools
 
-![FFmpegTools Banner](assets/banner.png)
+![FFmpegTools Banner](Assets/Banner.png)
 
 A lightweight collection of Windows batch scripts that simplify common media processing tasks using FFmpeg. Designed for quick and efficient video conversion and audio extraction without requiring command-line interaction.
 
