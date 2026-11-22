@@ -10,7 +10,7 @@ echo ============================================
 echo.
 
 if "%~1"=="" (
-    echo Drag and drop a JPG/JPEG image onto this BAT.
+    echo Drag and drop an image (JPG, PNG, WebP, BMP, etc.) onto this BAT.
     echo.
     pause
     exit /b
@@ -82,13 +82,13 @@ echo %INPUT%
 echo ============================================
 echo.
 
-if /i not "%EXT%"==".jpg" if /i not "%EXT%"==".jpeg" (
-    echo ERROR: JPG/JPEG only.
+if /i not "%EXT%"==".jpg" if /i not "%EXT%"==".jpeg" if /i not "%EXT%"==".png" if /i not "%EXT%"==".webp" if /i not "%EXT%"==".bmp" if /i not "%EXT%"==".tif" if /i not "%EXT%"==".tiff" if /i not "%EXT%"==".gif" (
+    echo ERROR: Unsupported image extension: %EXT%
     exit /b
 )
 
-set "OUTPUT=%FOLDER%%NAME%_compressed.jpg"
-set "TEST=%TEMP%\ffmpeg_test_%RANDOM%%RANDOM%.jpg"
+set "OUTPUT=%FOLDER%%NAME%_compressed%EXT%"
+set "TEST=%TEMP%\ffmpeg_test_%RANDOM%%RANDOM%%EXT%"
 
 del "%TEST%" >nul 2>&1
 del "%OUTPUT%" >nul 2>&1
@@ -171,13 +171,22 @@ set "QUALITY=%2"
 
 echo Trying resolution %SCALE%%% - quality %QUALITY%...
 
-ffmpeg.exe -y -hide_banner ^
--i "%INPUT%" ^
--vf "scale=trunc(iw*%SCALE%/100/2)*2:trunc(ih*%SCALE%/100/2)*2:flags=lanczos" ^
--frames:v 1 ^
--q:v %QUALITY% ^
--map_metadata -1 ^
-"%TEST%"
+if /i "%EXT%"==".png" (
+    ffmpeg.exe -y -hide_banner ^
+    -i "%INPUT%" ^
+    -vf "scale=trunc(iw*%SCALE%/100/2)*2:trunc(ih*%SCALE%/100/2)*2:flags=lanczos" ^
+    -frames:v 1 ^
+    -compression_level 9 ^
+    "%TEST%"
+) else (
+    ffmpeg.exe -y -hide_banner ^
+    -i "%INPUT%" ^
+    -vf "scale=trunc(iw*%SCALE%/100/2)*2:trunc(ih*%SCALE%/100/2)*2:flags=lanczos" ^
+    -frames:v 1 ^
+    -q:v %QUALITY% ^
+    -map_metadata -1 ^
+    "%TEST%"
+)
 
 if not exist "%TEST%" (
     echo FFmpeg failed.
